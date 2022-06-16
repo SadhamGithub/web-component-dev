@@ -1,27 +1,41 @@
-import { LightningElement } from "lwc";
+import { LightningElement } from 'lwc';
+import LOCALE from '@salesforce/i18n/locale';
+import SHORTDATEFORM from '@salesforce/i18n/dateTime.shortDateFormat';
 
 export default class App extends LightningElement {
-  title = "Welcome to Lightning Web Components!";
+    datetimeVar;
+    formattedDate;
+    formattedDatet;
+  handleDateTime(event){
+    var dateVar = new Date();
+    if(dateVar.getHours() > 20){
+      dateVar = new Date() + 1;
+      dateVar.setHours(8);
+    }
+    else{
+      dateVar.setHours(dateVar.getHours() + 1);
+    }
+    dateVar.setMinutes(0, 0, 0);
 
-  showFeatures = true;
+    console.log('dateVar:', dateVar);
 
-  /**
-   * Getter for the features property
-   */
-  get features() {
-    return [
-      {
-        label: "Learn in the browser.",
-        icon: "utility:edit",
-      },
-      {
-        label: "View changes to code instantly with Live Compilation.",
-        icon: "utility:refresh",
-      },
-      {
-        label: "Style your components with SLDS.",
-        icon: "utility:brush",
-      },
-    ];
+    var options = {
+      year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', second: 'numeric',
+      hour12: false,
+    };
+
+   this.formattedDate = new Intl.DateTimeFormat(LOCALE , options).format(dateVar);
+//    yyyy-MM-dd HH:mm:ss  
+    this.formattedDatet = `${dateVar.getFullYear()}-${dateVar.getMonth() + 1}-${dateVar.getDate()} ${dateVar.getHours()}:${dateVar.getMinutes()}:${dateVar.getSeconds()}`;
+  console.log('** '+ this.formattedDatet);
+    // const date = new Date();
+    //     console.log('** '+ date);
+
+    // const newDate = Date.parse(event.target.value);
+    // console.log('** '+ date);
+    // console.log('time >> '+ event.target.value);
+    // // this.datetimeVar = event.target.value;
+    //  this.formattedDate = new Intl.DateTimeFormat(LOCALE , { dateStyle: 'full', timeStyle: 'long' }).format(newDate);
   }
 }
